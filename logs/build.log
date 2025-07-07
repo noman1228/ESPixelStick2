@@ -1,0 +1,4 @@
+2025-06-29 23:02:53,708 - ESPBuildManager - INFO - Checking dependencies...
+2025-06-29 23:02:57,505 - ESPBuildManager - INFO - Processing environment: jmt_controller
+2025-06-29 23:03:05,759 - ESPBuildManager - INFO - Building firmware for jmt_controller
+2025-06-29 23:03:35,856 - ESPBuildManager - INFO - Flashing images to COM96
