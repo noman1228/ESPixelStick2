@@ -50,7 +50,10 @@ c_InputDDP::~c_InputDDP ()
     // DEBUG_START;
 
     // OutputMgr.PauseOutput (false);
-    // udp->stop ();
+    if(udp)
+    {
+        udp->close ();
+    }
 
     // DEBUG_END;
 } // ~c_InputDDP
@@ -63,9 +66,9 @@ void c_InputDDP::Begin ()
     suspend = false;
 
     memset (&stats, 0x00, sizeof (stats));
+    udp = new(_udp) AsyncUDP();
 
     // DEBUG_V("");
-    udp = new AsyncUDP ();
 
     NetworkStateChanged (NetworkMgr.IsConnected ());
 
