@@ -453,6 +453,8 @@ $(function ()
 // lets get started
     RequestConfigFile("admininfo.json");
     RequestConfigFile("config.json");
+    RequestConfigFile("output_config.json");
+    RequestConfigFile("input_config.json");
     SetServerTime();
     RequestDiagData();
     StartRequestingStatusUpdate();  // start self filling status loop
@@ -546,7 +548,7 @@ function JsonObjectAccess(obj, Path, value, Action)
         console.error(err);
         return obj;
     }
-}
+} // JsonObjectAccess
 
 function MergeConfigTree(SourceTree, TargetTree, CurrentTarget, FullSelector)
 {
@@ -826,7 +828,7 @@ async function StartRequestingStatusUpdate()
             StartRequestingStatusUpdate();
         }, 1000);
     } // end timer was not running
-}
+} // StartRequestingStatusUpdate
 
 function RequestStatusUpdate()
 {
