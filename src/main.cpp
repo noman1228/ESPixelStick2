@@ -45,7 +45,9 @@
 #ifdef SUPPORT_SENSOR_DS18B20
 #include "service/SensorDS18B20.h"
 #endif // def SUPPORT_SENSOR_DS18B20
-
+#ifdef SUPPORT_OLED
+#include "service/DisplayOLED.h"
+#endif
 #ifdef ARDUINO_ARCH_ESP8266
 #include <Hash.h>
 extern "C"
@@ -59,6 +61,7 @@ extern "C"
 #   include <esp_task_wdt.h>
 #   include "soc/soc.h"
 #   include "soc/rtc_cntl_reg.h"
+#   include "esp_system.h"
 #else
 #	error "Unsupported CPU type."
 #endif
@@ -109,7 +112,7 @@ uint32_t DiscardedRxData = 0;
 /////////////////////////////////////////////////////////
 
 #define NO_CONFIG_NEEDED time_t(-1)
-
+void CheckAndRebootIfPowerOn();
 void ScheduleLoadConfig() {ConfigLoadNeeded = now(); }
 void LoadConfig();
 void GetConfig (JsonObject & json);
@@ -149,6 +152,10 @@ void esp_alloc_failed_hook_callback(size_t requested_size, uint32_t caps, const 
 /** Arduino based setup code that is executed at startup. */
 void setup()
 {
+CheckAndRebootIfPowerOn();
+#ifdef SUPPORT_OLED
+    OLED.Begin();
+#endif
 #ifdef DEBUG_GPIO
     ResetGpio(DEBUG_GPIO);
     pinMode(DEBUG_GPIO, OUTPUT);
@@ -556,7 +563,10 @@ void loop()
 #ifdef SUPPORT_SENSOR_DS18B20
     SensorDS18B20.Poll();
 #endif // def SUPPORT_SENSOR_DS18B20
-
+#ifdef SUPPORT_OLED
+    FeedWDT();
+    OLED.Poll();
+#endif
     // need to keep the rx pipeline empty
     size_t BytesToDiscard = min (100, LOG_PORT.available ());
     DiscardedRxData += BytesToDiscard;
@@ -643,4 +653,14 @@ void FeedWDT ()
 #else
     ESP.wdtFeed ();
 #endif // def ARDUINO_ARCH_ESP32
+}
+void CheckAndRebootIfPowerOn()
+{
+    esp_reset_reason_t reason = esp_reset_reason();
+
+    if (reason == ESP_RST_POWERON)
+    {
+        logcon(F("Power-on detected. Rebooting to ensure clean startup..."));
+        ESP.restart();
+    }
 }
