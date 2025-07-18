@@ -197,6 +197,11 @@ void UnzipFiles::ProcessCurrentFileInZip(unz_file_info & fi, String & FileName)
         {
             BytesRead = zip.readCurrentFile(pOutputBuffer, BufferSize);
             // DEBUG_V(String("BytesRead: ") + String(BytesRead));
+            if(BytesRead <= 0)
+            {
+                break;
+            }
+
             if(BytesRead != FileMgr.WriteSdFile(FileHandle, pOutputBuffer, BytesRead))
             {
                 logcon(String(F("Failed to write data to '")) + FileName + "'");
