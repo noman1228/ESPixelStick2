@@ -289,6 +289,7 @@ bool c_InputE131::SetConfig (ArduinoJson::JsonObject& jsonConfig)
 void c_InputE131::validateConfiguration ()
 {
     // DEBUG_START;
+    FeedWDT();
 
     // DEBUG_V (String ("             startUniverse: ") + String (startUniverse));
     // DEBUG_V (String ("       ChannelsPerUniverse: ") + String (ChannelsPerUniverse));
