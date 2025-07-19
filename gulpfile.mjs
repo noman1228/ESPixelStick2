@@ -37,8 +37,10 @@ gulp.task("css", function () {
     .pipe(plumber())
     .pipe(using())
     /* .pipe(concat("esps.css")) */
+    /* .pipe(concat("esps.css")) */
     .pipe(cleancss())
     .pipe(gzip())
+    .pipe(gulp.dest("data/www/css"));
     .pipe(gulp.dest("data/www/css"));
 });
 
@@ -46,14 +48,16 @@ gulp.task("css", function () {
 gulp.task("js", function () {
   return gulp
     .src(["html/js/*.js"])
+    .src(["html/js/*.js"])
     .pipe(plumber())
     .pipe(using())
     /* .pipe(concat("esps.js")) */
-    .pipe(
+    /* .pipe(
       terser({ toplevel: true })
     ) /* comment out this line to debug the script file */
     .pipe(gzip())
     .pipe(using())
+    .pipe(gulp.dest("data/www/js"));
     .pipe(gulp.dest("data/www/js"));
 });
 
