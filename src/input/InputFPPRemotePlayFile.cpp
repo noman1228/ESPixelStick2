@@ -163,10 +163,12 @@ void c_InputFPPRemotePlayFile::GetStatus (JsonObject& JsonStatus)
     DEBUG_V(String("temp: ") + temp);
 
     JsonWrite(JsonStatus, CN_current_sequence,  temp);
+    JsonWrite(JsonStatus, CN_current_sequence,  temp);
     JsonWrite(JsonStatus, CN_playlist,          temp);
     JsonWrite(JsonStatus, CN_seconds_elapsed,   String (secs));
     JsonWrite(JsonStatus, CN_seconds_played,    String (secs));
     JsonWrite(JsonStatus, CN_seconds_remaining, String (secsRem));
+    JsonWrite(JsonStatus, CN_sequence_filename, temp);
     JsonWrite(JsonStatus, CN_sequence_filename, temp);
     JsonWrite(JsonStatus, F("PlayedFileCount"), PlayedFileCount);
 
